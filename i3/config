@@ -64,6 +64,9 @@ include ~/.config/i3/config-modules/modes/resize-mode.conf
 ## include workspaces behaviour
 include ~/.config/i3/workspaces.conf
 
+# Autostart user specific files (may be set in dex)
+include ~/.config/i3/config-modules/autostart.conf
+
 ##############
 # compositor #
 ##############
@@ -91,9 +94,6 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # pizdec https://habr.com/ru/companies/ruvds/articles/583328/
 exec --no-startup-id dex --autostart --environment i3
 
-# Autostart user specific files (may be set in dex)
-include ~/.config/i3/config-modules/autostart.conf
-
 # start a script to setup displays
 exec --no-startup-id ~/.screenlayout/monitor.sh
 
@@ -102,11 +102,9 @@ exec --no-startup-id ~/.screenlayout/monitor.sh
 exec --no-startup-id sleep 1 && feh --bg-fill --recursive --randomize --slideshow-delay 600 ~/Pictures/wallpappers
 
 # set powersavings for display:
-exec --no-startup-id xset s 480 dpms 600 600 600
-
-## Powersaving
-#  todo
-exec --no-startup-id xset s 600 -dpms 600 600 600
+# need set dpms is on with zero timers because betterlockscreen set dpms itself
+exec --no-startup-id xset s off dpms 0 0 0
+exec --no-startup-id xidlehook --not-when-audio --not-when-fullscreen --timer 300 "betterlockscreen --off 15 --quiet --lock" ""
 
 # Desktop notifications
 # dunst config used ~/.config/dunst/dunstrc
