@@ -21,13 +21,6 @@ set $mod Mod4
 # tabbed: Each new window will open fullscreen as a tab (left to right)
 workspace_layout default
 
-# i3 stacking layout:
-# Each window will be fullscreen and tabbed top to bottom.
-#workspace_layout stacking
-
-
-#workspace_layout tabbed
-
 ##############################
 # extra options for windows: #
 ##############################
@@ -62,183 +55,14 @@ set $right l
 ###################
 
 ## include keybindings
-include ~/.config/i3/config-modules/workspace-keybindings.conf
+include ~/.config/i3/config-modules/keybindings/workspace-keybindings.conf
+include ~/.config/i3/config-modules/keybindings/actions-keybindings.conf
 
 ## include modes
-include ~/.config/i3/config-modules/resize-mode.conf
+include ~/.config/i3/config-modules/modes/resize-mode.conf
 
-######################################
-# keybindings for different actions: #
-######################################
-
-# enable resize mode
-bindsym $mod+r mode "resize"
-
-# start a terminal
-bindsym $mod+Return exec --no-startup-id xfce4-terminal
-
-# kill focused window
-bindsym $mod+q kill
-
-# exit-menu
-bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/scripts/powermenu
-
-# Lock the system
-# lock by blurring the screen:
-bindsym $mod+l exec --no-startup-id ~/.config/i3/scripts/blur-lock
-
-# reload the configuration file
-bindsym $mod+Shift+c reload
-
-# restart i3 inplace (preserves your layout/session, can be used to update i3)
-bindsym $mod+Shift+r restart
-
-# keybinding in fancy rofi (automated):
-# need much better keyhint script. This one seems to me uninformative
-# bindsym F1 exec --no-startup-id ~/.config/i3/scripts/keyhint-2
-
-# Backlight control
-#bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight +10 && notify-send "Brightness - $(xbacklight -get | cut -d '.' -f 1)%"
-#bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -10 && notify-send "Brightness - $(xbacklight -get | cut -d '.' -f 1)%"
-# Backlight setting using dunst osc
-bindsym XF86MonBrightnessUp exec --no-startup-id ~/.config/i3/scripts/volume_brightness.sh brightness_up
-bindsym XF86MonBrightnessDown exec --no-startup-id ~/.config/i3/scripts/volume_brightness.sh brightness_down
-
-# change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+b focus up
-bindsym $mod+o focus right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-
-# move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+b move up
-bindsym $mod+Shift+o move right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-
-# split in horizontal orientation
-bindsym $mod+h split h
-
-# split in vertical orientation
-bindsym $mod+v split v
-
-# enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
-
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+g layout tabbed
-bindsym $mod+e layout toggle split
-
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
-
-# focus the parent container
-bindsym $mod+a focus parent
-
-# open new empty workspace
-bindsym $mod+Shift+n exec --no-startup-id ~/.config/i3/scripts/empty_workspace
-
-# Multimedia Keys
-
-# volume
-# use meta keys without showing osc
-#bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blocks
-#bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse sset Master 5%- && pkill -RTMIN+1 i3blocks
-# use meta keys showing osc using dunst
-bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.config/i3/scripts/volume_brightness.sh volume_up
-bindsym XF86AudioLowerVolume exec --no-startup-id ~/.config/i3/scripts/volume_brightness.sh volume_down
-
-# gradular volume control
-bindsym $mod+XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse sset Master 1%+ && pkill -RTMIN+1 i3blocks
-bindsym $mod+XF86AudioLowerVolume exec --no-startup-id amixer -D pulse sset Master 1%- && pkill -RTMIN+1 i3blocks
-
-# mute
-#bindsym XF86AudioMute exec --no-startup-id amixer sset Master toggle && killall -USR1 i3blocks
-# use meta keys showing osc using dunst
-bindsym XF86AudioMute exec --no-startup-id ~/.config/i3/scripts/volume_brightness.sh volume_mute
-
-# mic mute toggle
-bindsym XF86AudioMicMute exec amixer sset Capture toggle
-
-# audio control
-bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause 
-# Above line will also work for pausing
-bindsym XF86AudioNext exec --no-startup-id playerctl next
-bindsym XF86AudioPrev exec --no-startup-id playerctl previous
-
-# Redirect sound to headphones
-# todo where this script?
-bindsym $mod+p exec --no-startup-id /usr/local/bin/switch-audio-port
-
-# Power Profiles menu switcher (rofi)
-bindsym $mod+Shift+p exec --no-startup-id ~/.config/i3/scripts/power-profiles
-
-## App shortcuts
-# todo take out to external conf (maybe, or delete this and use only rofi)
-bindsym $mod+w exec --no-startup-id /usr/bin/firefox
-bindsym $mod+n exec --no-startup-id /usr/bin/thunar
-bindsym Print exec --no-startup-id scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
-
-##########################################
-# configuration for workspace behaviour: #
-##########################################
-
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:"
-set $ws2 "2:"
-set $ws3 "3:⌨"
-set $ws4 "4:"
-set $ws5 "5:"
-set $ws6 "6:🛢"
-set $ws7 "7:☎"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
-
-# use workspaces on different displays:
-# where you have to replace VGA-0/HDMI-0 with the names for your displays
-# you can get from xrandr command
-#workspace $ws1 output VGA-0
-#workspace $ws2 output VGA-0
-#workspace $ws3 output HDMI-0
-#workspace $ws4 output HDMI-0
-#workspace $ws5 output HDMI-0
-
-# bind program to workspace and focus to them on startup:
- assign [class="(?i)firefoxdeveloperedition"] $ws2
- assign [class="Thunar"] $ws4
- assign [class="TelegramDesktop"] $ws5
- assign [class="Mattermost"] $ws5
- assign [class="^zoom" instance="^zoom"] $ws7
- assign [class="^jetbrains-"] $ws3
- assign [class="code-oss"] $ws3
-# automatic set focus new window if it opens on another workspace than the current:
- for_window [class=Xfce4-terminal] focus
-# for_window [class=(?i)firefoxdeveloperedition] focus
- for_window [class=Thunar] focus
-
-#focus when window activated
-focus_on_window_activation focus
-
-# automatic set focus new window if it opens on another workspace than the current:
-for_window [class="^jetbrains-"] focus
+## include workspaces behaviour
+include ~/.config/i3/workspaces.conf
 
 ##############
 # compositor #
@@ -291,8 +115,6 @@ exec --no-startup-id xset s 600 -dpms 600 600 600
 # may need to run dbus-launch explicitly: 
 #exec --no-startup-id dbus-launch /usr/bin/dunst
 exec --no-startup-id /usr/bin/dunst
-# alternative if you installed aside with XFCE4:
-# exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd &
 
 ###############
 # system tray #
@@ -352,26 +174,23 @@ client.urgent		    	$urgentred	$urgentred	$white		$yellowbrown	$yellowbrown
 # Start i3bar to display a workspace bar
 # (plus the system information i3status finds out, if available)
 bar {
-		font pango: Noto Sans Regular 10
-		status_command i3blocks -c ~/.config/i3/i3blocks.conf
-	    	mode dock
-			position top
-#	    	i3bar_command i3bar --transparency
-# it could be that you have no primary display set: set one (xrandr --output <output> --primary)
-# reference: https://i3wm.org/docs/userguide.html#_tray_output
-		    tray_output primary
-		    tray_padding 3
+	font pango: Noto Sans Regular 10
+	status_command i3blocks -c ~/.config/i3/i3blocks.conf
+	mode dock
+	position top
+	# reference: https://i3wm.org/docs/userguide.html#_tray_output
+	tray_output primary
+	tray_padding 3
 
-# When strip_workspace_numbers is set to yes,
-# any workspace that has a name of the form
-# “[n][:][NAME]” will display only the name.
-strip_workspace_numbers yes
-##strip_workspace_name no
+	# When strip_workspace_numbers is set to yes,
+	# any workspace that has a name of the form
+	# “[n][:][NAME]” will display only the name.
+	strip_workspace_numbers yes
 
-		    colors {
-		    separator          $purple
-		    background         $darkgrey
-		    statusline         $white
+	colors {
+		separator          $purple
+		background         $darkgrey
+		statusline         $white
 #                          		border 		        bg		txt		indicator
 		focused_workspace	$mediumgrey	   	$grey		$darkgrey	$purple
 		active_workspace	$lightblue      	$mediumgrey	$darkgrey	$purple
